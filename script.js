@@ -73,7 +73,33 @@ function secondTask(data) {
   });
 }
 
+function mostCommonLetter(peopleWithNicknames) {
+  peopleWithNicknames = secondTask(peopleWithNicknames);
+  return peopleWithNicknames.map(person => {
+    const allInOne = (person.firstName + person.lastName + person.nickname).toLowerCase();
+    const counts = {};
+    for (const char of allInOne) {
+      if (/[a-ząćęłńóśźż]/i.test(char)) { // tylko litery
+        counts[char] = (counts[char] || 0) + 1;
+      }
+    }
+    let maxCount = 0;
+    for (const c in counts) {
+      if (counts[c] > maxCount) {
+        maxCount = counts[c];
+      }
+    }
+    const mostFrequentLetters = Object.keys(counts)
+      .filter(letter => counts[letter] === maxCount)
+      .sort();
 
+    const letter = mostFrequentLetters[0];
+    return { ...person,
+      mostCommonLetter: { letter, count: maxCount }
+    };
+    
+  })
+}
 
-console.log("wynik",secondTask(peopleWithNicknames));
+console.log("wynik",mostCommonLetter(peopleWithNicknames));
 
